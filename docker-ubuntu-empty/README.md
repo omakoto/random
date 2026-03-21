@@ -4,6 +4,19 @@ This project provides scripts to create and run a custom Ubuntu Docker image wit
 
 ## Scripts
 
+### zz-init-docker.sh
+Installs Docker on the host Ubuntu system.
+- Removes old Docker versions.
+- Sets up the official Docker APT repository.
+- Installs `docker-ce`, `docker-ce-cli`, and other necessary plugins.
+- Adds the current user to the `docker` group.
+
+To run:
+```bash
+./zz-init-docker.sh
+```
+**Note:** A logout or restart is required for group changes to take effect.
+
 ### 00-create-ubuntu.sh
 Builds the Docker image `ubuntu-25-custom`.
 - Installs basic packages: `ca-certificates`, `curl`, `wget`, `vim`, `sudo`.
