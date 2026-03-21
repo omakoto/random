@@ -31,13 +31,26 @@ To build the image:
 
 ### 01-run.sh
 Runs the built Docker image interactively.
-- Uses the `--rm` flag to automatically remove the container after exit.
+- Optionally takes a script file as an argument.
+- If a script is provided, it's mounted, executed, and the shell remains open for interactive use.
+- Uses the `--rm` flag for cleanup.
 - Logins as the `omakoto` user.
-- Changes made inside the container are not persisted.
 
-To run the container:
+To run:
 ```bash
-./01-run.sh
+./01-run.sh [script-file]
+```
+
+### 02-run-script.sh
+Runs a host-side script file inside the Docker image.
+- Takes a script filename as an argument.
+- Mounts the script file as read-only into the container.
+- Uses the `--rm` flag for cleanup.
+- Executes the script as the `omakoto` user using `bash`.
+
+To run:
+```bash
+./02-run-script.sh <script-file>
 ```
 
 ## Requirements
