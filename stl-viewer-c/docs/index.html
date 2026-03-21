@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang=en><meta charset=UTF-8><meta name=viewport content="width=device-width, initial-scale=1.0"><title>STL Viewer</title><link rel=stylesheet href=stl-viewer.db55e8a9.css><body>
+  <div id=app>
+    <header id=toolbar>
+      <div class=toolbar-left>
+        <h1>3D Viewer</h1>
+      </div>
+      <div class=toolbar-center>
+        <label class=btn for=file-input>Upload Model</label>
+        <input type=file id=file-input accept=.stl,.3mf,.step,.stp hidden>
+        <span id=file-name>No file loaded</span>
+      </div>
+      <div class=toolbar-right>
+        <button id=view-toggle class=btn>Switch to Isometric</button>
+        <button id=reset-view class=btn>Reset View</button>
+      </div>
+    </header>
+    <main>
+      <canvas id=gl-canvas></canvas>
+      <div id=overlay-info>
+        <p id=view-mode-label>Perspective View</p>
+        <p id=model-info></p>
+      </div>
+      <div id=drop-hint>
+        <div class=drop-hint-inner>
+          <p>Upload or drop an STL file to get started</p>
+          <p class=supported-formats>Supported: .stl (more coming soon)</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type=module src=stl-viewer.4173a7da.js></script>
+
+
