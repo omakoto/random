@@ -8,6 +8,12 @@ else
     INSTALLED_VERSION=$(echo "$INSTALLED_VERSION_FULL" | awk '{print $3}' | sed 's/go//')
 fi
 
+# Ensure jq is installed
+if ! command -v jq &> /dev/null; then
+    echo "jq not found. Installing..."
+    sudo apt update && sudo apt install -y jq
+fi
+
 # Get latest stable version from Go website
 REMOTE_VERSION_FULL=$(curl -s https://go.dev/dl/?mode=json | jq -r '.[] | select(.stable == true) | .version' | head -n 1)
 REMOTE_VERSION=$(echo "$REMOTE_VERSION_FULL" | sed 's/go//')
