@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Install latest go
+#
+# curl https://raw.githubusercontent.com/omakoto/random/refs/heads/main/go-updater/update-golang.sh | bash
+
+
 # Get currently installed version
 if ! INSTALLED_VERSION_FULL=$(go version 2>/dev/null); then
     echo "Go is not installed or not in PATH."
