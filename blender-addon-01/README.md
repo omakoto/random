@@ -32,9 +32,9 @@ pip install -r requirements.txt
 - `fake-bpy-module-latest` provides autocompletion for the `bpy` module.
 
 ### 4. Packaging
-A utility script `00-pach.sh` is provided to package the add-on for distribution.
+A utility script `00-pack.sh` is provided to package the add-on for distribution.
 ```bash
-./00-pach.sh
+./00-pack.sh
 ```
 This will create a zip file in the `dist/` directory (e.g., `dist/blender-addon-01.zip`) containing the contents of the `src/` folder.
 
