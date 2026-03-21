@@ -25,32 +25,57 @@ version_gt() {
     test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"
 }
 
-if version_gt "$REMOTE_VERSION" "$INSTALLED_VERSION"; then
-    echo "A newer version of Go is available: $REMOTE_VERSION"
-    
-    # Detect OS and Arch
-    OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-    ARCH=$(uname -m)
-    case "$ARCH" in
-        x86_64)  ARCH="amd64" ;;
-        aarch64) ARCH="arm64" ;;
-        armv7l)  ARCH="armv6l" ;; # Closest match for generic ARM
-        i386|i686) ARCH="386" ;;
-    esac
-
-    FILENAME="go${REMOTE_VERSION}.${OS}-${ARCH}.tar.gz"
-    DOWNLOAD_URL="https://go.dev/dl/${FILENAME}"
-    DEST_PATH="/tmp/${FILENAME}"
-
-    echo "Downloading ${DOWNLOAD_URL} to ${DEST_PATH}..."
-    curl -L "$DOWNLOAD_URL" -o "$DEST_PATH"
-    
-    if [[ $? -eq 0 ]]; then
-        echo "Download complete: ${DEST_PATH}"
-    else
-        echo "Download failed."
-        exit 1
-    fi
-else
+if ! version_gt "$REMOTE_VERSION" "$INSTALLED_VERSION"; then
     echo "Go is up to date."
+    exit 0
 fi
+
+echo "A newer version of Go is available: $REMOTE_VERSION"
+
+# Detect OS and Arch
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH=$(uname -m)
+case "$ARCH" in
+    x86_64)  ARCH="amd64" ;;
+    aarch64) ARCH="arm64" ;;
+    armv7l)  ARCH="armv6l" ;; # Closest match for generic ARM
+    i386|i686) ARCH="386" ;;
+esac
+
+FILENAME="go${REMOTE_VERSION}.${OS}-${ARCH}.tar.gz"
+DOWNLOAD_URL="https://go.dev/dl/${FILENAME}"
+DEST_PATH="/tmp/${FILENAME}"
+
+echo "Downloading ${DOWNLOAD_URL} to ${DEST_PATH}..."
+curl -L "$DOWNLOAD_URL" -o "$DEST_PATH"
+
+if [[ $? -ne 0 ]]; then
+    echo "Download failed."
+    exit 1
+fi
+
+echo "Download complete: ${DEST_PATH}"
+
+# Setup target directory
+TARGET_DIR="/usr/local/makoto"
+echo "Setting up ${TARGET_DIR}..."
+sudo mkdir -p "$TARGET_DIR"
+sudo chown omakoto:omakoto "$TARGET_DIR"
+
+# Remove old Go installation in target
+if [[ -d "${TARGET_DIR}/go" ]]; then
+    echo "Removing old Go installation at ${TARGET_DIR}/go..."
+    rm -rf "${TARGET_DIR}/go"
+fi
+
+# Extract to target directory
+echo "Extracting ${DEST_PATH} to ${TARGET_DIR}..."
+tar -C "$TARGET_DIR" -xzf "$DEST_PATH"
+
+if [[ $? -ne 0 ]]; then
+    echo "Extraction failed."
+    exit 1
+fi
+
+echo "Go ${REMOTE_VERSION} installed successfully to ${TARGET_DIR}/go"
+echo "You may need to update your PATH to include ${TARGET_DIR}/go/bin"
