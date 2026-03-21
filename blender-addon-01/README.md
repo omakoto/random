@@ -40,11 +40,21 @@ This will create a zip file in the `dist/` directory (e.g., `dist/blender-addon-
 
 ### 5. Installing in Blender
 To test the add-on in Blender:
-1. Zip the `src/` directory (or the folder containing `__init__.py`).
+1. Run `./00-pack.sh` to create the zip file in the `dist/` directory.
 2. In Blender, go to `Edit > Preferences > Add-ons > Install...`.
 3. Select the zip file and enable the add-on.
 
 Alternatively, you can create a symbolic link from your Blender add-ons directory to the `src/` folder for live development.
 
+### 6. Usage
+Once enabled, you can invoke the skeleton add-on in two ways:
+1. **Object Menu**: In the 3D Viewport, go to `Object > Hello World Operator` (at the bottom of the menu).
+2. **Search**: Press `F3` (or `Space` depending on your keymap) and search for "Hello World Operator".
+
+When clicked, it will:
+- Display a "Hello World!" message at the bottom of the screen.
+- Print "Hello World from the Skeleton Addon!" to the System Console.
+
 ## Debugging
+
 A `launch.json` is provided for remote debugging. This typically requires a "debug server" script or add-on (like `debugpy`) running inside Blender to attach to.
