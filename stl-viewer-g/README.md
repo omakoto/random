@@ -18,11 +18,22 @@ A lightweight, web-based STL file viewer built with Three.js, TypeScript, and Vi
 
 ### Installation
 
-1. Clone the repository.
-2. Install dependencies:
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd stl-viewer-g
+   ```
+
+2. **Install dependency packages:**
    ```bash
    npm install
    ```
+   *Alternatively, for a clean install using the lockfile:*
+   ```bash
+   npm ci
+   ```
+
+   This will install all required packages listed in `package.json` and `package-lock.json`, including Three.js and development tools like Vite and TypeScript.
 
 ### Running the Application
 
