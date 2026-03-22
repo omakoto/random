@@ -4,6 +4,8 @@
 #
 # curl https://raw.githubusercontent.com/omakoto/random/refs/heads/main/go-updater/update-golang.sh | bash
 
+# Ensure we have sudo access
+sudo -v
 
 # Get currently installed version
 if ! INSTALLED_VERSION_FULL=$(go version 2>/dev/null); then
