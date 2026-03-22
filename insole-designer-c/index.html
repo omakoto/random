@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insole Designer</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #111827;
+      color: #d1d5db;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      width: 270px;
+      min-width: 270px;
+      background: #1f2937;
+      padding: 24px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-right: 1px solid #374151;
+      overflow-y: auto;
+    }
+
+    #sidebar h1 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: #60a5fa;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #6b7280;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #374151;
+    }
+
+    .param {
+      margin-bottom: 18px;
+    }
+
+    .param-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 5px;
+    }
+
+    .param-name {
+      font-size: 0.82rem;
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .param-value {
+      font-size: 0.82rem;
+      color: #93c5fd;
+      font-weight: 600;
+      min-width: 56px;
+      text-align: right;
+    }
+
+    .param-desc {
+      font-size: 0.68rem;
+      color: #6b7280;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #3b82f6;
+      cursor: pointer;
+      height: 4px;
+    }
+
+    .range-limits {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.62rem;
+      color: #4b5563;
+      margin-top: 2px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #374151;
+      margin: 16px 0;
+    }
+
+    #goBtn {
+      margin-top: auto;
+      padding: 11px;
+      background: #1d4ed8;
+      color: #eff6ff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    #goBtn:hover { background: #2563eb; }
+    #goBtn:active { background: #1e40af; }
+
+    .live-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      cursor: pointer;
+    }
+    .live-toggle input { accent-color: #3b82f6; cursor: pointer; }
+
+    /* ── Viewport ── */
+    #viewport {
+      flex: 1;
+      position: relative;
+      min-width: 0;
+    }
+
+    #canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      outline: none;
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.68rem;
+      color: #374151;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    #info-overlay {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      font-size: 0.72rem;
+      color: #4b5563;
+      text-align: right;
+      pointer-events: none;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="sidebar">
+    <h1>Insole Designer</h1>
+
+    <div class="section-title">Dimensions</div>
+
+    <div class="param">
+      <div class="param-header">
+        <span class="param-name">Length</span>
+        <span class="param-value"><span id="lengthVal">260</span> mm</span>
+      </div>
+      <div class="param-desc">Total heel-to-toe length</div>
+      <input type="range" id="length" min="220" max="310" step="1" value="260" />
+      <div class="range-limits"><span>220</span><span>310</span></div>
+    </div>
+
+    <div class="param">
+      <div class="param-header">
+        <span class="param-name">Forefoot Width</span>
+        <span class="param-value"><span id="forefootWidthVal">95</span> mm</span>
+      </div>
+      <div class="param-desc">Width at ball of foot</div>
+      <input type="range" id="forefootWidth" min="75" max="120" step="1" value="95" />
+      <div class="range-limits"><span>75</span><span>120</span></div>
+    </div>
+
+    <div class="param">
+      <div class="param-header">
+        <span class="param-name">Heel Width</span>
+        <span class="param-value"><span id="heelWidthVal">65</span> mm</span>
+      </div>
+      <div class="param-desc">Width at heel</div>
+      <input type="range" id="heelWidth" min="45" max="90" step="1" value="65" />
+      <div class="range-limits"><span>45</span><span>90</span></div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title">Arch</div>
+
+    <div class="param">
+      <div class="param-header">
+        <span class="param-name">Arch Height</span>
+        <span class="param-value"><span id="archHeightVal">12</span> mm</span>
+      </div>
+      <div class="param-desc">Medial longitudinal arch support</div>
+      <input type="range" id="archHeight" min="0" max="30" step="0.5" value="12" />
+      <div class="range-limits"><span>0 (flat)</span><span>30 (high)</span></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <button id="goBtn">▶  Generate</button>
+
+    <label class="live-toggle">
+      <input type="checkbox" id="liveUpdate" checked />
+      Live update while dragging
+    </label>
+  </div>
+
+  <div id="viewport">
+    <canvas id="canvas" tabindex="0"></canvas>
+    <div class="hint">Drag to rotate · Scroll to zoom · Right-drag to pan</div>
+    <div id="info-overlay"></div>
+  </div>
+
+  <script type="module" src="dist/bundle.js"></script>
+</body>
+</html>

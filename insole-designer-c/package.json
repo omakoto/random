@@ -1,0 +1,17 @@
+{
+  "name": "insole-designer",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/main.ts --bundle --outfile=dist/bundle.js --format=esm --sourcemap",
+    "dev": "esbuild src/main.ts --bundle --outfile=dist/bundle.js --format=esm --sourcemap --watch"
+  },
+  "dependencies": {
+    "three": "^0.171.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.171.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.0"
+  }
+}
